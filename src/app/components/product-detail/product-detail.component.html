@@ -1,0 +1,166 @@
+<div class="detail-container">
+  <!-- Miga de pan / Enlace de retorno -->
+  <nav class="breadcrumb-nav">
+    <a routerLink="/" class="breadcrumb-link">
+      <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Volver al catálogo</span>
+    </a>
+    @if (product()) {
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">{{ product()?.brand }} {{ product()?.model }}</span>
+    }
+  </nav>
+
+  <!-- Estado de Carga -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando información del producto...</p>
+    </div>
+  }
+
+  <!-- Estado de Error -->
+  @if (error()) {
+    <div class="error-state">
+      <p>{{ error() }}</p>
+      <a routerLink="/" class="btn-retry">Ir al catálogo</a>
+    </div>
+  }
+
+  <!-- Ficha de Detalle (2 Columnas) -->
+  @if (!loading() && product(); as p) {
+    <div class="detail-grid">
+      <!-- Columna 1: Imagen del Producto -->
+      <section class="image-column">
+        <div class="image-card">
+          <img
+            [src]="p.imgUrl"
+            [alt]="p.brand + ' ' + p.model"
+            class="detail-image"
+          />
+        </div>
+      </section>
+
+      <!-- Columna 2: Ficha Técnica y Acciones de Compra -->
+      <section class="info-column">
+        <header class="info-header">
+          <span class="brand-tag">{{ p.brand }}</span>
+          <h1 class="product-title">{{ p.model }}</h1>
+          <p class="product-price">
+            {{ p.price ? p.price + ' €' : 'Precio no disponible' }}
+          </p>
+        </header>
+
+        <!-- Especificaciones Técnicas (Requisito del PDF) -->
+        <section class="specs-section">
+          <h2 class="section-title">Especificaciones Técnicas</h2>
+          <dl class="specs-list">
+            <div class="spec-row">
+              <dt>CPU</dt>
+              <dd>{{ p.cpu || 'No especificada' }}</dd>
+            </div>
+            <div class="spec-row">
+              <dt>RAM</dt>
+              <dd>{{ p.ram || 'No especificada' }}</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Sistema Operativo</dt>
+              <dd>{{ p.os || 'No especificado' }}</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Pantalla</dt>
+              <dd>{{ p.displayResolution || 'No especificada' }}</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Batería</dt>
+              <dd>{{ p.battery || 'No especificada' }}</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Cámara Principal</dt>
+              <dd>{{ formatCamera(p.primaryCamera) }}</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Cámara Secundaria</dt>
+              <dd>{{ formatCamera(p.secondaryCmera) }}</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Dimensiones</dt>
+              <dd>{{ p.dimentions || 'No especificadas' }}</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Peso</dt>
+              <dd>{{ p.weight ? p.weight + ' g' : 'No especificado' }}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- Acciones de Compra y Selectores -->
+        <section class="actions-section">
+          <h2 class="section-title">Opciones y Compra</h2>
+
+          <!-- Selector de Almacenamiento -->
+          @if (p.options?.storages?.length) {
+            <div class="selector-group">
+              <label class="selector-label">Almacenamiento:</label>
+              <div class="options-buttons">
+                @for (storage of p.options.storages; track storage.code) {
+                  <button
+                    type="button"
+                    class="option-btn"
+                    [class.option-btn-active]="selectedStorageCode() === storage.code"
+                    (click)="selectStorage(storage.code)"
+                  >
+                    {{ storage.name }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Selector de Color -->
+          @if (p.options?.colors?.length) {
+            <div class="selector-group">
+              <label class="selector-label">Color:</label>
+              <div class="options-buttons">
+                @for (color of p.options.colors; track color.code) {
+                  <button
+                    type="button"
+                    class="option-btn"
+                    [class.option-btn-active]="selectedColorCode() === color.code"
+                    (click)="selectColor(color.code)"
+                  >
+                    {{ color.name }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Boton de Anadir al Carrito -->
+          <div class="button-wrapper">
+            <button
+              type="button"
+              class="btn-add-cart"
+              [disabled]="isAddingToCart() || selectedColorCode() === null || selectedStorageCode() === null"
+              (click)="addToCart()"
+            >
+              @if (isAddingToCart()) {
+                <span class="spinner-small"></span>
+                <span>Añadiendo...</span>
+              } @else {
+                <span>Añadir al carrito</span>
+              }
+            </button>
+
+            @if (addSuccessMessage()) {
+              <p class="success-message">{{ addSuccessMessage() }}</p>
+            }
+          </div>
+        </section>
+      </section>
+    </div>
+  }
+</div>

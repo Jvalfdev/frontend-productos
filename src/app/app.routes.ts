@@ -8,6 +8,11 @@ export const routes: Routes = [
     title: 'Catálogo de Móviles'
   },
   {
+    path: 'product/:id',
+    loadComponent: () => import('./components/product-detail/product-detail.component').then(m => m.ProductDetailComponent),
+    title: 'Detalle de Producto'
+  },
+  {
     path: '**',
     redirectTo: ''
   }

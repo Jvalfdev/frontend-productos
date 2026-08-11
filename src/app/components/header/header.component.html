@@ -1,0 +1,22 @@
+<header class="navbar">
+  <div class="navbar-container">
+    <!-- Titulo simple de la app como enlace a inicio -->
+    <a routerLink="/" class="navbar-title">
+      Prueba Técnica
+    </a>
+
+    <!-- Icono del Carrito de compras -->
+    <div class="cart-container" aria-label="Carrito de compras">
+      <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 0 1-8 0"></path>
+      </svg>
+      
+      <!-- Badge con el contador en tiempo real -->
+      <span class="cart-badge" [class.cart-badge-active]="cartCount() > 0">
+        {{ cartCount() }}
+      </span>
+    </div>
+  </div>
+</header>

@@ -26,10 +26,12 @@ export class ProductService {
 
     // si tenemos datos validos en cache, los devolvemos sin llamar a la api
     if (cached) {
+      console.log('[CACHE] Listado de productos cargado desde localStorage');
       return of(cached);
     }
 
     // si no hay cache o ha expirado, llamamos a la api y guardamos
+    console.log('[API] Obteniendo listado de productos desde la API');
     return this.http.get<Product[]>(`${this.baseUrl}/product`).pipe(
       tap(products => this.saveToCache(cacheKey, products))
     );
@@ -41,9 +43,11 @@ export class ProductService {
     const cached = this.getFromCache<ProductDetail>(cacheKey);
 
     if (cached) {
+      console.log(`[CACHE] Detalle del producto ${id} cargado desde localStorage`);
       return of(cached);
     }
 
+    console.log(`[API] Obteniendo detalle del producto ${id} desde la API`);
     return this.http.get<ProductDetail>(`${this.baseUrl}/product/${id}`).pipe(
       tap(product => this.saveToCache(cacheKey, product))
     );

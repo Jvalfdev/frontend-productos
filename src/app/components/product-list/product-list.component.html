@@ -1,0 +1,67 @@
+<div class="catalog-container">
+  <!-- Barra superior con Buscador y Contador -->
+  <section class="catalog-header">
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Buscar por marca o modelo..."
+        [value]="searchTerm()"
+        (input)="onSearchInput($event)"
+        class="search-input"
+        aria-label="Buscar productos"
+      />
+    </div>
+    
+    <div class="results-count">
+      @if (!loading()) {
+        <span>{{ filteredProducts().length }} {{ filteredProducts().length === 1 ? 'producto' : 'productos' }}</span>
+      }
+    </div>
+  </section>
+
+  <!-- Estado de Carga -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando catálogo de productos...</p>
+    </div>
+  }
+
+  <!-- Estado de Error -->
+  @if (error()) {
+    <div class="error-state">
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  <!-- Grid de Productos -->
+  @if (!loading() && !error()) {
+    <div class="products-grid">
+      @for (product of filteredProducts(); track product.id) {
+        <article class="product-card">
+          <a [routerLink]="['/product', product.id]" class="card-link">
+            <div class="image-wrapper">
+              <img
+                [src]="product.imgUrl"
+                [alt]="product.brand + ' ' + product.model"
+                loading="lazy"
+                class="product-image"
+              />
+            </div>
+            <div class="card-info">
+              <span class="product-brand">{{ product.brand }}</span>
+              <h2 class="product-model">{{ product.model }}</h2>
+              <p class="product-price">
+                {{ product.price ? product.price + ' €' : 'Precio no disponible' }}
+              </p>
+            </div>
+          </a>
+        </article>
+      } @empty {
+        <div class="empty-state">
+          <p>No se encontraron móviles que coincidan con "{{ searchTerm() }}"</p>
+        </div>
+      }
+    </div>
+  }
+</div>

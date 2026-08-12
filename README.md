@@ -1,59 +1,39 @@
-# FrontendProductos
+# Frontend Productos
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.3.
+Aplicación SPA desarrollada en Angular para catálogo y compra de dispositivos móviles.
 
-## Development server
+## Requisitos previos
+* Node.js (v20 o superior)
+* npm
 
-To start a local development server, run:
+## Instalación y Ejecución
 
+### 1. Instalar dependencias
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### 2. Arrancar servidor de desarrollo (puerto 4200)
 ```bash
-ng generate component component-name
+npm start
 ```
+Abrir en el navegador: `http://localhost:4200`
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## Scripts disponibles
 
-## Building
+* `npm start`: Inicia el servidor de desarrollo en local (`ng serve`).
+* `npm run build`: Compila la aplicación para producción (`ng build`).
+* `npm test`: Ejecuta la suite de pruebas unitarias con Vitest (`ng test --watch=false`).
+* `npm run lint`: Comprueba el formateo del código fuente.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## Arquitectura y Decisiones Técnicas
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+* **Estructura por tipo de archivo**: Organización limpia y desacoplada en `models/`, `services/` y `components/`.
+* **Angular Moderno**: Uso de *Standalone Components*, *Control Flow* (`@if`, `@for`, `@empty`) y *Signals* para la gestión reactiva del estado sin fugas de memoria.
+* **Caché en Cliente (1 hora)**: Implementación de almacenamiento en `localStorage` con control de expiración (TTL de 60 minutos) tanto para el listado del catálogo como para las fichas individuales de producto.
+* **Buscador en tiempo real**: Filtrado reactivo en memoria por marca y modelo mediante `computed()` Signals en 0 ms.
+* **Ficha de producto y preselección**: Layout a 2 columnas con preselección automática de variantes cuando solo existe una opción disponible.

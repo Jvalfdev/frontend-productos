@@ -3,6 +3,9 @@ import { RouterLink } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 
+/**
+ * Componente para la vista del catálogo de productos (PLP) con buscador en tiempo real.
+ */
 @Component({
   selector: 'app-product-list',
   imports: [RouterLink],

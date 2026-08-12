@@ -9,6 +9,9 @@ interface CacheItem<T> {
   timestamp: number;
 }
 
+/**
+ * Servicio de acceso al catálogo de productos con sistema de caché en cliente de 1 hora.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +22,10 @@ export class ProductService {
   // 1 hora de expiracion en milisegundos (60 min * 60 seg * 1000 ms)
   private readonly CACHE_DURATION_MS = 1000 * 60 * 60;
 
-  // obtener listado de productos (con cache de 1 hora)
+  /**
+   * Obtiene el listado completo de productos del catálogo.
+   * Utiliza la caché de localStorage si los datos tienen menos de 1 hora.
+   */
   getProducts(): Observable<Product[]> {
     const cacheKey = 'products_list';
     const cached = this.getFromCache<Product[]>(cacheKey);
@@ -37,7 +43,12 @@ export class ProductService {
     );
   }
 
-  // obtener detalle de un producto (con cache de 1 hora por id)
+  /**
+   * Obtiene la ficha técnica completa de un producto por su identificador.
+   * Utiliza la caché individual de localStorage si no ha expirado.
+   *
+   * @param id identificador único del producto
+   */
   getProductById(id: string): Observable<ProductDetail> {
     const cacheKey = `product_${id}`;
     const cached = this.getFromCache<ProductDetail>(cacheKey);

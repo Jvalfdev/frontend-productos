@@ -4,6 +4,10 @@ import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { ProductDetail } from '../../models/product.model';
 
+/**
+ * Componente para la vista de detalle de producto (PDP) con ficha técnica,
+ * selectores de variantes y botón de compra con feedback.
+ */
 @Component({
   selector: 'app-product-detail',
   imports: [RouterLink],

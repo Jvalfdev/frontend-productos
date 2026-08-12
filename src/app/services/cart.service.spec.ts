@@ -8,8 +8,23 @@ import { AddToCartPayload } from '../models/product.model';
 describe('CartService', () => {
   let service: CartService;
   let httpTesting: HttpTestingController;
+  let storage: Record<string, string> = {};
 
   beforeEach(() => {
+    storage = {};
+    const mockLocalStorage = {
+      getItem: (key: string) => storage[key] ?? null,
+      setItem: (key: string, value: string) => { storage[key] = value; },
+      removeItem: (key: string) => { delete storage[key]; },
+      clear: () => { storage = {}; }
+    };
+
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true
+    });
+
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
@@ -26,11 +41,11 @@ describe('CartService', () => {
     httpTesting.verify();
   });
 
-  it('debe inicializar el contador del carrito en 0', () => {
+  it('debe inicializar el contador del carrito en 0 si no hay valor previo en localStorage', () => {
     expect(service.count()).toBe(0);
   });
 
-  it('debe enviar la peticion POST /api/cart y actualizar el signal del contador', () => {
+  it('debe enviar la peticion POST /api/cart, actualizar el signal y persistir en localStorage', () => {
     const payload: AddToCartPayload = {
       id: 'ZmGrkLRPXOTpxsU4jjAcv',
       colorCode: 1000,
@@ -48,5 +63,6 @@ describe('CartService', () => {
     req.flush({ count: 1 });
 
     expect(service.count()).toBe(1);
+    expect(globalThis.localStorage.getItem('cart_count')).toBe('1');
   });
 });

@@ -11,11 +11,7 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
-      providers: [
-        provideRouter([]),
-        provideHttpClient(),
-        CartService
-      ]
+      providers: [provideRouter([]), provideHttpClient(), CartService],
     }).compileComponents();
 
     cartService = TestBed.inject(CartService);

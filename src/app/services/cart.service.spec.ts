@@ -14,23 +14,25 @@ describe('CartService', () => {
     storage = {};
     const mockLocalStorage = {
       getItem: (key: string) => storage[key] ?? null,
-      setItem: (key: string, value: string) => { storage[key] = value; },
-      removeItem: (key: string) => { delete storage[key]; },
-      clear: () => { storage = {}; }
+      setItem: (key: string, value: string) => {
+        storage[key] = value;
+      },
+      removeItem: (key: string) => {
+        delete storage[key];
+      },
+      clear: () => {
+        storage = {};
+      },
     };
 
     Object.defineProperty(globalThis, 'localStorage', {
       value: mockLocalStorage,
       writable: true,
-      configurable: true
+      configurable: true,
     });
 
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        CartService
-      ]
+      providers: [provideHttpClient(), provideHttpClientTesting(), CartService],
     });
 
     service = TestBed.inject(CartService);
@@ -49,10 +51,10 @@ describe('CartService', () => {
     const payload: AddToCartPayload = {
       id: 'ZmGrkLRPXOTpxsU4jjAcv',
       colorCode: 1000,
-      storageCode: 2000
+      storageCode: 2000,
     };
 
-    service.addToCart(payload).subscribe(response => {
+    service.addToCart(payload).subscribe((response) => {
       expect(response.count).toBe(1);
     });
 

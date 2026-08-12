@@ -29,22 +29,22 @@ describe('ProductDetailComponent', () => {
     options: {
       colors: [
         { code: 1000, name: 'Black' },
-        { code: 1001, name: 'White' }
+        { code: 1001, name: 'White' },
       ],
       storages: [
         { code: 2000, name: '16 GB' },
-        { code: 2001, name: '32 GB' }
-      ]
-    }
+        { code: 2001, name: '32 GB' },
+      ],
+    },
   };
 
   beforeEach(async () => {
     mockProductService = {
-      getProductById: vi.fn().mockReturnValue(of(sampleDetail))
+      getProductById: vi.fn().mockReturnValue(of(sampleDetail)),
     };
 
     mockCartService = {
-      addToCart: vi.fn().mockReturnValue(of({ count: 1 }))
+      addToCart: vi.fn().mockReturnValue(of({ count: 1 })),
     };
 
     await TestBed.configureTestingModule({
@@ -56,14 +56,14 @@ describe('ProductDetailComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: (key: string) => (key === 'id' ? '1' : null)
-              }
-            }
-          }
+                get: (key: string) => (key === 'id' ? '1' : null),
+              },
+            },
+          },
         },
         { provide: ProductService, useValue: mockProductService },
-        { provide: CartService, useValue: mockCartService }
-      ]
+        { provide: CartService, useValue: mockCartService },
+      ],
     }).compileComponents();
   });
 
@@ -100,7 +100,7 @@ describe('ProductDetailComponent', () => {
     expect(mockCartService.addToCart).toHaveBeenCalledWith({
       id: '1',
       colorCode: 1000,
-      storageCode: 2000
+      storageCode: 2000,
     });
   });
 });

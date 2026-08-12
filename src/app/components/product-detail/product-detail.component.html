@@ -2,7 +2,15 @@
   <!-- Miga de pan / Enlace de retorno -->
   <nav class="breadcrumb-nav">
     <a routerLink="/" class="breadcrumb-link">
-      <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        class="back-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <line x1="19" y1="12" x2="5" y2="12"></line>
         <polyline points="12 19 5 12 12 5"></polyline>
       </svg>
@@ -36,11 +44,7 @@
       <!-- Columna 1: Imagen del Producto -->
       <section class="image-column">
         <div class="image-card">
-          <img
-            [src]="p.imgUrl"
-            [alt]="p.brand + ' ' + p.model"
-            class="detail-image"
-          />
+          <img [src]="p.imgUrl" [alt]="p.brand + ' ' + p.model" class="detail-image" />
         </div>
       </section>
 
@@ -144,7 +148,9 @@
             <button
               type="button"
               class="btn-add-cart"
-              [disabled]="isAddingToCart() || selectedColorCode() === null || selectedStorageCode() === null"
+              [disabled]="
+                isAddingToCart() || selectedColorCode() === null || selectedStorageCode() === null
+              "
               (click)="addToCart()"
             >
               @if (isAddingToCart()) {

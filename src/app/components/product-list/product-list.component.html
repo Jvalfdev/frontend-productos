@@ -11,10 +11,13 @@
         aria-label="Buscar productos"
       />
     </div>
-    
+
     <div class="results-count">
       @if (!loading()) {
-        <span>{{ filteredProducts().length }} {{ filteredProducts().length === 1 ? 'producto' : 'productos' }}</span>
+        <span
+          >{{ filteredProducts().length }}
+          {{ filteredProducts().length === 1 ? 'producto' : 'productos' }}</span
+        >
       }
     </div>
   </section>

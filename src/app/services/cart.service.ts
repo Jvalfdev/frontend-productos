@@ -4,7 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { AddToCartPayload, AddToCartResponse } from '../models/product.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
   private readonly http = inject(HttpClient);
@@ -27,9 +27,9 @@ export class CartService {
   // anadir producto y actualizar contador
   addToCart(payload: AddToCartPayload): Observable<AddToCartResponse> {
     return this.http.post<AddToCartResponse>(this.apiUrl, payload).pipe(
-      tap(response => {
+      tap((response) => {
         if (response && response.count) {
-          this._count.update(current => {
+          this._count.update((current) => {
             const newTotal = current + response.count;
             try {
               localStorage.setItem(this.CART_STORAGE_KEY, newTotal.toString());
@@ -39,7 +39,7 @@ export class CartService {
             return newTotal;
           });
         }
-      })
+      }),
     );
   }
 }

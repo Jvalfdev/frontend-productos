@@ -16,8 +16,8 @@ describe('ProductService', () => {
       brand: 'Acer',
       model: 'Iconia',
       price: '170',
-      imgUrl: 'https://test.com/1.jpg'
-    }
+      imgUrl: 'https://test.com/1.jpg',
+    },
   ];
 
   const mockDetail: ProductDetail = {
@@ -30,31 +30,33 @@ describe('ProductService', () => {
     ram: '2 GB',
     options: {
       colors: [{ code: 1000, name: 'Black' }],
-      storages: [{ code: 2000, name: '16 GB' }]
-    }
+      storages: [{ code: 2000, name: '16 GB' }],
+    },
   };
 
   beforeEach(() => {
     storage = {};
     const mockLocalStorage = {
       getItem: (key: string) => storage[key] ?? null,
-      setItem: (key: string, value: string) => { storage[key] = value; },
-      removeItem: (key: string) => { delete storage[key]; },
-      clear: () => { storage = {}; }
+      setItem: (key: string, value: string) => {
+        storage[key] = value;
+      },
+      removeItem: (key: string) => {
+        delete storage[key];
+      },
+      clear: () => {
+        storage = {};
+      },
     };
 
     Object.defineProperty(globalThis, 'localStorage', {
       value: mockLocalStorage,
       writable: true,
-      configurable: true
+      configurable: true,
     });
 
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        ProductService
-      ]
+      providers: [provideHttpClient(), provideHttpClientTesting(), ProductService],
     });
 
     service = TestBed.inject(ProductService);
@@ -66,7 +68,7 @@ describe('ProductService', () => {
   });
 
   it('debe obtener la lista de productos desde la API y guardarla en localStorage', () => {
-    service.getProducts().subscribe(products => {
+    service.getProducts().subscribe((products) => {
       expect(products.length).toBe(1);
       expect(products[0].brand).toBe('Acer');
     });
@@ -82,12 +84,15 @@ describe('ProductService', () => {
 
   it('debe devolver los productos desde localStorage si la cache es menor a 1 hora sin llamar a la API', () => {
     // preparar cache valida
-    globalThis.localStorage.setItem('products_list', JSON.stringify({
-      data: mockProducts,
-      timestamp: Date.now()
-    }));
+    globalThis.localStorage.setItem(
+      'products_list',
+      JSON.stringify({
+        data: mockProducts,
+        timestamp: Date.now(),
+      }),
+    );
 
-    service.getProducts().subscribe(products => {
+    service.getProducts().subscribe((products) => {
       expect(products.length).toBe(1);
       expect(products[0].model).toBe('Iconia');
     });
@@ -97,7 +102,7 @@ describe('ProductService', () => {
   });
 
   it('debe obtener el detalle del producto y guardarlo en su cache individual', () => {
-    service.getProductById('1').subscribe(detail => {
+    service.getProductById('1').subscribe((detail) => {
       expect(detail.id).toBe('1');
       expect(detail.cpu).toBe('Quad Core');
     });

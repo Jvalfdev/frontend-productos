@@ -10,22 +10,31 @@ describe('ProductListComponent', () => {
   let mockProductService: { getProducts: ReturnType<typeof vi.fn> };
 
   const sampleProducts: Product[] = [
-    { id: '1', brand: 'Acer', model: 'Iconia Talk S', price: '170', imgUrl: 'https://test.com/1.jpg' },
+    {
+      id: '1',
+      brand: 'Acer',
+      model: 'Iconia Talk S',
+      price: '170',
+      imgUrl: 'https://test.com/1.jpg',
+    },
     { id: '2', brand: 'Apple', model: 'iPhone 13', price: '800', imgUrl: 'https://test.com/2.jpg' },
-    { id: '3', brand: 'Samsung', model: 'Galaxy S21', price: '750', imgUrl: 'https://test.com/3.jpg' }
+    {
+      id: '3',
+      brand: 'Samsung',
+      model: 'Galaxy S21',
+      price: '750',
+      imgUrl: 'https://test.com/3.jpg',
+    },
   ];
 
   beforeEach(async () => {
     mockProductService = {
-      getProducts: vi.fn().mockReturnValue(of(sampleProducts))
+      getProducts: vi.fn().mockReturnValue(of(sampleProducts)),
     };
 
     await TestBed.configureTestingModule({
       imports: [ProductListComponent],
-      providers: [
-        provideRouter([]),
-        { provide: ProductService, useValue: mockProductService }
-      ]
+      providers: [provideRouter([]), { provide: ProductService, useValue: mockProductService }],
     }).compileComponents();
   });
 
@@ -43,7 +52,7 @@ describe('ProductListComponent', () => {
     fixture.detectChanges();
 
     const component = fixture.componentInstance;
-    
+
     // filtrar por 'apple'
     component.searchTerm.set('apple');
     expect(component.filteredProducts().length).toBe(1);
